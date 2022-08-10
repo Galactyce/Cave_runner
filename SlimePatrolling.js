@@ -38,7 +38,7 @@ SlimePatrolling.prototype.update = function(delta) {
       // }
   
     var player = powerupjs.GameStateManager.get(ID.game_state_playing).player;
-    if (this.collidesWith(player)) {
+    if (this.boundingBox.intersects(player.boundingBox)) {
       player.reset()
     }
 
