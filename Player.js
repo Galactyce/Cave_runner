@@ -1,0 +1,205 @@
+function Player(position) {
+  powerupjs.AnimatedGameObject.call(this, 1, 0, ID.layer_objects);
+  this.position = position;
+  this.loadAnimation(sprites.idle, "idle", false);
+  this.loadAnimation(sprites.run, "run", true, 0.08);
+  this.playAnimation("idle");
+  this.playerVelo = new powerupjs.Vector2(0, 0);
+  this.velocity = new powerupjs.Vector2(0, 0);
+  this.startPosition = this.position.copy();
+  this.oldPos = new powerupjs.Vector2(this.position);
+  this.startRoom = 0;
+  this.origin = new powerupjs.Vector2(
+    this.sprite.width / 2,
+    this.sprite.height / 2
+  );
+  this.jumping = false;
+}
+
+Player.prototype = Object.create(powerupjs.AnimatedGameObject.prototype);
+
+Player.prototype.reset = function () {
+  this.position = this.startPosition.copy();
+  var playing = powerupjs.GameStateManager.currentGameState;
+  playing.currentLevelIndex = this.startRoom;
+  this.visible = true;
+};
+
+Player.prototype.handleInput = function () {
+  if (powerupjs.Keyboard.keys[37].down) {
+    this.mirror = true;
+    this.velocity.x += -105;
+    if (this.velocity.x < -700) this.velocity.x = -500;
+    if (this.onPlatform) this.velocity.x = -500;
+    this.playAnimation("run");
+
+  } else if (powerupjs.Keyboard.keys[39].down) {
+    this.mirror = false;
+    this.velocity.x += 105;
+    if (this.velocity.x > 700) this.velocity.x = 500;
+    if (this.onPlatform) this.velocity.x = 500;
+    this.playAnimation("run");
+
+  } else {
+    if (!this.onPlatform) this.velocity.x = 0;
+    this.playAnimation("idle");
+  }
+  if (powerupjs.Keyboard.keys[65].pressed) {
+    this.reset();
+  }
+  if (powerupjs.Keyboard.keys[38].down && this.onLadder) {
+    this.velocity.y = -200;
+  }
+  if (
+    powerupjs.Keyboard.keys[32].pressed &&
+    (this.onTheGround || this.onLadder || this.onPlatform)
+  ) {
+    this.jump();
+
+  }
+  
+  this.origin = new powerupjs.Vector2(
+    this.sprite.width / 2,
+    this.sprite.height / 2
+  );
+};
+
+Player.prototype.update = function (delta) {
+  powerupjs.AnimatedGameObject.prototype.update.call(this, delta);
+
+  this.doPhysics();
+
+
+};
+
+Player.prototype.doPhysics = function () {
+  // if (this.onPlatform) return;
+  if (this.onLadder) this.velocity.y = 150;
+  else this.velocity.y += 100;
+  if (this.velocity.y > 1400) this.velocity.y = 1400;
+   this.handleCollisions()
+};
+
+Player.prototype.jump = function () {
+  this.velocity.y -= 1150;
+  this.jumping = true;
+  this.onLadder = false;
+};
+
+Player.prototype.handleCollisions = function () {
+  this.onTheGround = false;
+  this.onLadder = false;
+   this.onPlatform = false;
+
+  var tiles = powerupjs.GameStateManager.currentGameState.currentLevel.find(
+    ID.tiles
+  );
+  var x_floor = Math.floor((this.position.x + this.origin.x) / tiles.cellWidth);
+  var y_floor = Math.floor(
+    (this.position.y + this.origin.y) / tiles.cellHeight
+  );
+  for (var y = y_floor - 2; y < y_floor + 1; y++)
+    for (var x = x_floor - 1; x < x_floor + 1; x++) {
+      var tileType = tiles.getTileType(x, y);
+      if (tileType === TileType.background) continue;
+      var tileBounds = new powerupjs.Rectangle(
+        x * tiles.cellWidth,
+        y * tiles.cellHeight,
+        tiles.cellWidth,
+        tiles.cellHeight
+      );
+      var boundingBox = this.boundingBox;
+      boundingBox.height =  this.boundingBox.height + 1;
+      var depth = boundingBox.calculateIntersectionDepth(tileBounds);
+      if (!tileBounds.intersects(boundingBox)) {
+        continue;
+      }
+
+      if (Math.abs(depth.x) < Math.abs(depth.y)) {
+        if (tileType === TileType.normal || tileType === TileType.danger) {
+          if (tileType === TileType.danger) {
+            this.reset();
+          } else {
+            this.position.x += depth.x;
+          }
+          continue;
+        }
+      }
+
+      if (
+        this.previousYPosition <= tileBounds.top &&
+        tileType !== TileType.background &&
+        tileType !== TileType.ladder
+      ) {
+        if (tileType === TileType.danger) {
+          this.reset();
+          this.jumping = false;
+        } else {
+          this.onTheGround = true;
+           this.velocity.y = 0;
+        }
+      }
+
+      if (
+        tileType === TileType.normal ||
+        (this.onTheGround )
+      ) {
+        this.position.y += depth.y + 1;
+      }
+    
+  }
+  for (var y = y_floor - 2; y < y_floor + 1; y++)
+    for (var x = x_floor - 1; x <= x_floor + 1; x++) {
+      var tileType = tiles.getTileType(x, y);
+      if (tileType === TileType.background) continue;
+      var tileBounds = new powerupjs.Rectangle(
+        x * tiles.cellWidth,
+        y * tiles.cellHeight,
+        tiles.cellWidth,
+        tiles.cellHeight
+      );
+      var boundingBox = this.boundingBox;
+      boundingBox.height += 1;
+      var depth = boundingBox.calculateIntersectionDepth(tileBounds);
+      if (boundingBox.intersects(tileBounds) && tileType === TileType.ladder) {
+        this.onLadder = true;
+        return;
+      }
+    }
+
+  for (
+    var i = 0;
+    i <
+    powerupjs.GameStateManager.currentGameState.currentLevel.platforms.listLength;
+    i++
+  ) {
+    var platform =
+      powerupjs.GameStateManager.currentGameState.currentLevel.platforms.at(i);
+    var platRect = new powerupjs.Rectangle(
+      platform.position.x,
+      platform.position.y,
+      platform.width,
+      platform.height
+    );
+    platRect.draw();
+    this.boundingBox.draw();
+    if (this.position.y + this.height / 2 > platform.position.y && this.oldPos.y <= platform.position.y) {
+       if (this.position.x > platform.position.x && this.position.x < platform.position.x + platform.width) {
+      var depth = platRect.calculateIntersectionDepth(this.boundingBox);
+      this.onPlatform = true;                                                                                                                                                                 
+      // this.position.y -= Math.abs(depth.y);
+      this.velocity.y = 0
+      this.velocity.x += platform.velocity.x - this.velocity.x ;
+      this.position.y -= depth.y - 1
+      this.velocity.y = platform.velocity.y
+  
+  
+ }
+  }
+}
+
+
+  this.previousYPosition = this.position.y;
+  this.oldPos = new powerupjs.Vector2(this.position.x, this.position.y);
+  this.onLadder = false;
+};
