@@ -1,3 +1,3 @@
 # Cave_runner
 
-https://htmlpreview.github.io/?https://raw.githubusercontent.com/Galactyce/Cave_runner/master/index.html
+https://github.com/Galactyce/Cave_runner/blob/master/index.html
