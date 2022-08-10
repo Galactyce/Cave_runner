@@ -34,13 +34,13 @@ powerupjs.Game.loadAssets = function() {
   sprites.ladder = loadSprite('ladder_tile.png')
   sprites.block = loadSprite('block.png');
   sprites.single_cave_tile = loadSprite('single_cave_tile.png')
-  sprites.idle = loadSprite("character_idle.png", false);
-  sprites.run = loadSprite("character_run@4.png", false);
+  sprites.idle = loadSprite("character_idle.png");
+  sprites.run = loadSprite("character_run@4.png");
   sprites.cave_tiles = loadSprite('cave-tiles@32.png');
   sprites.moss_tiles = loadSprite('moss@3.png')
   sprites.flying_bomb = loadSprite('flying_bomb@2.png');
   sprites.flying_bomb_lit = loadSprite('flying_bomb_lit@2.png');
   sprites.flying_bomb_explode = loadSprite('flying_bomb_explode@5.png');
-  sprites.slime_bouncing = loadSprite('green_slime@2.png', false)
+  sprites.slime_bouncing = loadSprite('green_slime@2.png')
   sprites.moving_platform = loadSprite('moving_platform.png')
 }
