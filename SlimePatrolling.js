@@ -38,7 +38,8 @@ SlimePatrolling.prototype.update = function(delta) {
       // }
   
     var player = powerupjs.GameStateManager.get(ID.game_state_playing).player;
-    if (this.boundingBox.intersects(player.boundingBox)) {
+    var boundingBox = new powerupjs.Rectangle(this.position.x + 10, this.position.y + 10, this.width / 2- 20, this.height - 20)
+    if (boundingBox.intersects(player.boundingBox)) {
       player.reset()
     }
 

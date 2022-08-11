@@ -23,12 +23,17 @@ EnemyField.prototype.loadTiles = function() {
 
 
 EnemyField.prototype.loadEnemy = function(type, x, y) {
+
   switch(type) {
 
     case "F":
-       return new FlyingBomb(new powerupjs.Vector2(x, y))
+      return new FlyingBomb(new powerupjs.Vector2(x, y))
     case 'S': 
-        return new SlimePatrolling(new powerupjs.Vector2(x, y))   
+      return new SlimePatrolling(new powerupjs.Vector2(x, y))   
+    case 'R': 
+      return new Rocket(new powerupjs.Vector2(x - 20, y + 25), false)
+    case 'L':
+      return new Rocket(new powerupjs.Vector2(x - 20, y + 25), true);   
     default: return new Tile('background', new powerupjs.Vector2(x, y))
   }
 

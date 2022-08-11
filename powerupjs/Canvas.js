@@ -78,7 +78,7 @@ Canvas_Singleton.prototype.drawImage = function (sprite, position, rotation, ori
   rotation = typeof rotation !== 'undefined' ? rotation : 0;
   scale = typeof scale !== 'undefined' ? scale : 1;
   origin = typeof origin !== 'undefined' ? origin : new powerupjs.Vector2(0, 0);
-  sourceRect = typeof sourceRect !== 'undefined' ? sourceRect : newpowerupjs. Rectangle(0, 0, sprite.width, sprite.height);
+  sourceRect = typeof sourceRect !== 'undefined' ? sourceRect : new powerupjs. Rectangle(0, 0, sprite.width, sprite.height);
   mirror = typeof mirror !== 'undefined' ? mirror : false;
 
   this.context.save();

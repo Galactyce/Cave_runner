@@ -2,8 +2,10 @@ function Level(currlevel, doorEntered) {
   powerupjs.GameObjectList.call(this);
   this.starting = true;
   this.levelData = window.LEVELS[currlevel];
-  this.decoData = window.DECORATION[currlevel]
-  this.enemyData = window.ENEMIES[currlevel]
+  this.decoData = window.DECORATION[currlevel];
+  this.enemyData = window.ENEMIES[currlevel];
+  this.checkpoints = new powerupjs.GameObjectList(ID.layer_objects_2);
+  this.add(this.checkpoints)
 var tiles = new TileFeild(currlevel, ID.tiles, this.levelData, this);
   this.cave_deco = new CaveDecoFeild(currlevel, ID.deco, this.decoData, this)
   this.add(this.cave_deco)
@@ -11,14 +13,25 @@ var tiles = new TileFeild(currlevel, ID.tiles, this.levelData, this);
   this.add(this.moss_deco);
   this.enemies = new EnemyField(currlevel, 10, this.enemyData, this)
   this.add(this.enemies)
-  this.platforms = new powerupjs.GameObjectList(ID.layer_overlays);
+  this.movingPlatforms = new powerupjs.GameObjectList(ID.layer_overlays);
+  for (var i=0; i<this.levelData.movingPlatforms.length; i++) {
+    var p = this.levelData.movingPlatforms[i]
+    this.movingPlatforms.add(new MovingPlatform(p.x, p.y, p.destX, p.destY, p.vX, p.vY, p.size, ID.platforms))
+    console.log(this.movingPlatforms[i])
+  }
+  this.add(this.movingPlatforms)
+  this.levers = new powerupjs.GameObjectList(ID.layer_objects_1);
+  for (var i=0; i<this.levelData.levers.length; i++) {
+    var l = this.levelData.levers[i];
+    this.levers.add(new Lever(l.x, l.y, l.id))
+  }
+  this.add(this.levers)
+  this.platforms = new powerupjs.GameObjectList(ID.layer_objects_2);
   for (var i=0; i<this.levelData.platforms.length; i++) {
-    var p = this.levelData.platforms[i]
-    this.platforms.add(new Platform(p.x, p.y, p.destX, p.destY, p.vX, p.vY, p.size, ID.platforms))
-    console.log(this.platforms[i])
+    var l = this.levelData.platforms[i];
+    this.platforms.add(new Platform(l.x, l.y, l.destX, l.destY, l.id, currlevel))
   }
   this.add(this.platforms)
-
   this.add(tiles);
   var backgroundBack = new powerupjs.SpriteGameObject(
     sprites.cave_background_back,
@@ -34,8 +47,7 @@ var tiles = new TileFeild(currlevel, ID.tiles, this.levelData, this);
     ID.layer_background_1
   );
   this.add(backgroundFront);
-
-  this.doorEntered = doorEntered
+  this.doorEntered = doorEntered;
 }
 
 Level.prototype = Object.create(powerupjs.GameObjectList.prototype);
@@ -62,6 +74,11 @@ Level.prototype.update = function (delta) {
   }
 };
 
+
+Level.prototype.draw = function() {
+  powerupjs.GameObjectList.prototype.draw.call(this);
+
+}
 // Level.prototype.loadBackgroundTile = function(x, y) {
 //   var t = new GrassTile(true, new powerupjs.Vector2(x, y));
 //   tiles.addAt(t, x, y);

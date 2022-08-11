@@ -4,7 +4,8 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <link href="pixel-text.css" rel="stylesheet"/>
+  <title>Cave Runner</title>
 </head>
 
 <body>
@@ -16,12 +17,15 @@
   <script src="powerupjs/Canvas.js"></script>
   <script src="powerupjs/Game.js"></script>
   <script src="Sprites&Sounds.js"></script>
+  <script src="Lever.js"></script>
+  <script src="Platform.js"></script>
+  <script src="Dialogue.js"></script>
   <script src="Tile.js"></script>
   <script src="TileField.js"></script>
   <script src="EnemyField.js"></script>
   <script src="FlyingBomb.js"></script>
   <script src="SlimePatrolling.js"></script>
-  <script src="Platform.js"></script>
+  <script src="MovingPlatform.js"></script>
   <script src="EnemyMap.js"></script>
   <script src="DecoTile.js"></script>
   <script src="DecoField.js"></script>
@@ -31,6 +35,8 @@
   <script src="Player.js"></script>
   <script src="LevelLayout.js"></script>
   <script src="PlayingGameState.js"></script>
+  <script src="InteractMarker.js"></script>
+  <script src="Rocket.js"></script>
   <script src="Level.js"></script>
   <script src="powerupjs/Math.js"></script>
   <script src="powerupjs/Button.js"></script>
@@ -41,7 +47,7 @@
   <script src="powerupjs/Mouse.js"></script>
   <script src="powerupjs/GameWorld.js"></script>
   <script>
-    setTimeout(powerupjs.Game.start, 1000)
+    setTimeout(powerupjs.Game.start, 2000)
   </script>
   <div id="gameArea">
     <canvas id="mycanvas" width="1300" height="700"></canvas>

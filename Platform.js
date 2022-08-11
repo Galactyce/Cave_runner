@@ -1,51 +1,38 @@
-function Platform(x, y, destX, destY, vX, vY, size, id) {
-  this.sprite = sprites.moving_platform
-  powerupjs.SpriteGameObject.call(this, this.sprite, 1, 0, ID.layer_overlays, id);
-  this.position = new powerupjs.Vector2(x, y - 30)
-  this.startPos = new powerupjs.Vector2(x, y)
-  this.vX = vX;
-  this.destX = destX;
-  this.destY = destY
-  this.vY = vY;
-  this.size = size;
-  this.d = 0;
-  this.velocity.x = this.vX
-  this.velocity.y = this.vY
+function Platform(x, y, destX, destY, id, currLevel) {
+  powerupjs.AnimatedGameObject.call(this, 1, ID.layer_objects_2);
+  this.position = new powerupjs.Vector2(x, y);
+  alert(currLevel)
+  this.currLevel = currLevel
+  this.dest = new powerupjs.Vector2(destX, destY);
+  this.activated = false
+  this.linkID = id;
+  this.loadAnimation(sprites.moving_platform, 'idle', 1);
+  this.playAnimation('idle')
 }
 
-Platform.prototype = Object.create(powerupjs.SpriteGameObject.prototype);
+Platform.prototype = Object.create(powerupjs.AnimatedGameObject.prototype);
 
 Platform.prototype.update = function(delta) {
-  this.d += 0.1
 
-  if (this.position.x > this.destX) {
-    this.velocity.x = Math.abs(this.velocity.x) * -1
-    // this.position.x = this.destX - 10;
-  }
-  if (this.position.x < this.startPos.x) {
-    this.velocity.x = Math.abs(this.velocity.x)
-
-  }
-  if (this.position.y < this.destY) {
-    this.velocity.y = Math.abs(this.velocity.y) 
-    // this.position.x = this.destX - 10;
-  }
-  if (this.position.y > this.startPos.y) {
-    this.velocity.y = Math.abs(this.velocity.y) * - 1
-
-  }
-  var player = powerupjs.GameStateManager.get(ID.game_state_playing).player;
-  powerupjs.SpriteGameObject.prototype.update.call(this, delta)
-
-  // player.oldPos.y = player.position.y
-  if (player.position.x > this.position.x && player.position.x < this.position.x + this.width && 
-    player.position.y + player.height / 2 > this.position.y  &&  player.oldPos.y + player.height / 2 <= this.position.y) {
-  // player.onTheGround = true
-  // player.onPlatform = true
-
-  }
+  powerupjs.AnimatedGameObject.prototype.update.call(this, delta)
   
+  if (this.activated) {
+    window.LEVELS[this.currLevel].platforms[this.linkID].active = true;
+    powerupjs.GameStateManager.get(ID.game_state_playing).writeLevelsStatus();
+
+    if (this.dest.x !== this.position.x)
+    this.velocity.x += 55;
+    if (this.position.x > this.dest.x)
+      this.position.x = this.dest.x;
+
+      if (this.dest.y !== this.position.y)
+      this.velocity.y += 55;
+      if (this.position.y > this.dest.y)
+      this.position.y = this.dest.y;
+    }
+  else {
+    this.velocity.x = 0;
+    this.velocity.y = 0
+  }
+
 }
-
-
-

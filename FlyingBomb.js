@@ -2,7 +2,7 @@ function FlyingBomb(position) {
   powerupjs.AnimatedGameObject.call(this, 1, ID.layer_overlays);
   this.loadAnimation(sprites.flying_bomb, "flying", true, 0.4);
   this.loadAnimation(sprites.flying_bomb_lit, "lit", true, 0.2);
-  this.loadAnimation(sprites.flying_bomb_explode, "explode", true, 0.03);
+  this.loadAnimation(sprites.explode, "explode", true, 0.03);
 
   this.position = position;
   this.startPosition = position;
@@ -81,7 +81,7 @@ FlyingBomb.prototype.update = function (delta) {
   var distanceX =
   (player.position.x - player.origin.x) - this.position.x + this.origin.x;
   var distanceY =
-  (player.position.y - player.origin.y) - this.position.y - this.origin.y;
+  (player.position.y - player.origin.y) - this.position.y + this.origin.y;
   if (Math.abs(distanceX) < 80 && Math.abs(distanceY)  < 80 && Date.now() > this.waitTime + 5000) {
     if (!this.lit) {
       this.explodeTime = Date.now();

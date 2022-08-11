@@ -1,0 +1,10 @@
+#game-area {
+  position: absolute;
+  width: 100%;;
+  height: 100%;
+}
+
+@font-face {
+  font-family: 'Pixelated';
+  src: url("C:/Users/elige/Downloads/SummerPixel22Regular-jE0W7.ttf");
+}
