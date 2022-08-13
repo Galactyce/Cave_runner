@@ -38,6 +38,8 @@ CaveDecoFeild.prototype.loadCaveTile = function(type, x, y) {
     case 'C': return new CaveDecoTile(16, new powerupjs.Vector2(x, y));
     case '+': return new CaveDecoTile(18, new powerupjs.Vector2(x, y));
     case '^': return new CaveDecoTile(19, new powerupjs.Vector2(x, y));
+    case '?': return new CaveDecoTile(25, new powerupjs.Vector2(x, y));
+    case 'M': return new CaveDecoTile(22, new powerupjs.Vector2(x, y));
     case 'V': return new CaveDecoTile(20, new powerupjs.Vector2(x, y));
     case '$': return new CaveDecoTile(17, new powerupjs.Vector2(x, y));
     case 'G': return new CaveDecoTile(26, new powerupjs.Vector2(x, y));
@@ -83,6 +85,43 @@ MossDecoFeild.prototype.loadMossTile = function(type, x, y) {
     case '1': return new MossDecoTile(0, new powerupjs.Vector2(x, y))
     case '2': return new MossDecoTile(1, new powerupjs.Vector2(x, y))
     case '3': return new MossDecoTile(2, new powerupjs.Vector2(x, y));
+    case '#': return new Tile('background', new powerupjs.Vector2(x, y))
+    case '-': return new Tile('background', new powerupjs.Vector2(x, y))
+    case '.': return new Tile('background', new powerupjs.Vector2(x, y))
+
+  }
+}
+
+function LavaDecoFeild(currlevel, id, data, parent) {
+  powerupjs.GameObjectGrid.call(this, window.DECORATION[currlevel].lava_tiles.length, window.DECORATION[currlevel].lava_tiles[0].length, ID.layer_overlays_1, id);
+  this.parent = parent
+  this.position = new powerupjs.Vector2(0, 0)
+  this.data = data
+  this.cellWidth = 60;
+  this.cellHeight = 59.5
+  this.loadTiles()
+}
+
+LavaDecoFeild.prototype = Object.create(powerupjs.GameObjectGrid.prototype)
+
+
+LavaDecoFeild.prototype.loadTiles = function() {
+  
+  for (var y = 0; y < this.rows; y++) {
+    for (var x = 0; x <  this.columns; x++) {
+      var t = this.loadMossTile(this.data.lava_tiles[y][x], Math.floor(x + this.position.x), y + this.position.y)
+      this.addAt(t, x, y)
+    }
+  }
+}
+
+
+
+LavaDecoFeild.prototype.loadMossTile = function(type, x, y) {
+  
+  switch(type) {
+    case 'T': return new LavaTile('surface', new powerupjs.Vector2(x, y))
+    case 'D': return new LavaTile('deep', new powerupjs.Vector2(x, y))
     case '#': return new Tile('background', new powerupjs.Vector2(x, y))
     case '-': return new Tile('background', new powerupjs.Vector2(x, y))
     case '.': return new Tile('background', new powerupjs.Vector2(x, y))

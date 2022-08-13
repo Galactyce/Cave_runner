@@ -1,5 +1,8 @@
 function MovingPlatform(x, y, destX, destY, vX, vY, size, id) {
-  this.sprite = sprites.moving_platform
+  if (size === 'big')
+    this.sprite = sprites.moving_platform
+  else if (size === 'small') 
+    this.sprite = sprites.moving_platform_small
   powerupjs.SpriteGameObject.call(this, this.sprite, 1, 0, ID.layer_overlays, id);
   this.position = new powerupjs.Vector2(x, y - 30)
   this.startPos = new powerupjs.Vector2(x, y)
@@ -9,6 +12,7 @@ function MovingPlatform(x, y, destX, destY, vX, vY, size, id) {
   this.vY = vY;
   this.size = size;
   this.d = 0;
+  
   this.velocity.x = this.vX
   this.velocity.y = this.vY
 }

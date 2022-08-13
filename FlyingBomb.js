@@ -79,10 +79,10 @@ FlyingBomb.prototype.update = function (delta) {
   var playingState = powerupjs.GameStateManager.get(ID.game_state_playing);
   var player = playingState.player;
   var distanceX =
-  (player.position.x - player.origin.x) - this.position.x + this.origin.x;
+  (player.position.x - player.origin.x) - this.position.x - this.origin.x;
   var distanceY =
-  (player.position.y - player.origin.y) - this.position.y + this.origin.y;
-  if (Math.abs(distanceX) < 80 && Math.abs(distanceY)  < 80 && Date.now() > this.waitTime + 5000) {
+  (player.position.y - player.origin.y) - this.position.y - this.origin.y;
+  if (Math.abs(distanceX) < 100 && Math.abs(distanceY)  < 100 && Date.now() > this.waitTime + 1000) {
     if (!this.lit) {
       this.explodeTime = Date.now();
       this.lit = true;
@@ -105,7 +105,7 @@ FlyingBomb.prototype.update = function (delta) {
       var player = playingState.player;
       var distanceX =
       (player.position.x - player.origin.x) -
-        this.position.x +
+        this.position.x -
         this.origin.x;
        
       var distanceY =
@@ -113,7 +113,7 @@ FlyingBomb.prototype.update = function (delta) {
 
         this.position.y -
         this.origin.y;
-      if (Math.abs(distanceX) < 100 && Math.abs(distanceY)  < 100) {
+      if (Math.abs(distanceX) < 150 && Math.abs(distanceY)  < 150) {
         player.reset()
       }
       if (Date.now() > this.animateTime + 150) {

@@ -35,6 +35,7 @@ TileFeild.prototype.loadTile = function(type, x, y) {
     case '-': return new Tile('platform', new powerupjs.Vector2(x, y));
     case 'D': return new Tile('danger', new powerupjs.Vector2(x, y), 'cave_spike');
     case 'K': return new Tile('danger', new powerupjs.Vector2(x, y), 'spike_block');
+    case 'L': return new Tile('danger', new powerupjs.Vector2(x, y), 'lava');
     case 'H': return new Tile('ladder', new powerupjs.Vector2(x, y));
     case 'C': this.root.checkpoints.add(new Checkpoint(new powerupjs.Vector2(x * this.cellWidth, y * this.cellHeight), this.currlevel))
     return new Tile('background', new powerupjs.Vector2(x, y))

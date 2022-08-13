@@ -14,7 +14,7 @@ function Player(position) {
     this.sprite.height / 2
   );
   this.jumping = false;
-  this.interactMarker = new InteractMarker(this.position)
+  this.interactMarker = new InteractMarker(this.position);
   this.isByInteractable = false;
 }
 
@@ -28,7 +28,12 @@ Player.prototype.reset = function () {
 };
 
 Player.prototype.handleInput = function () {
+  var playing = powerupjs.GameStateManager.get(ID.game_state_playing);
+  if (playing.inCutscene) return;
   if (powerupjs.Keyboard.keys[37].down) {
+    // if (this.onLadder) {
+    //   if (this.velocity.y !== 0) return
+    // }
     this.mirror = true;
     this.velocity.x += -105;
     if (this.velocity.x < -700) this.velocity.x = -500;
@@ -47,6 +52,11 @@ Player.prototype.handleInput = function () {
   if (powerupjs.Keyboard.keys[65].pressed) {
     powerupjs.GameStateManager.get(ID.game_state_playing).hardReset();
   }
+  if (powerupjs.Keyboard.keys[66].pressed) {
+    powerupjs.GameStateManager.get(ID.game_state_playing).writeLevelsStatus();
+    powerupjs.GameStateManager.get(ID.game_state_playing).loadLevelsStatus();
+    window.location.reload();
+  }
   if (powerupjs.Keyboard.keys[38].down && this.onLadder) {
     this.velocity.y = -200;
   }
@@ -64,16 +74,24 @@ Player.prototype.handleInput = function () {
 };
 
 Player.prototype.update = function (delta) {
+  var playing = powerupjs.GameStateManager.get(ID.game_state_playing);
+
+  if (playing.inCutscene) {
+    this.velocity.x = 0;
+    this.velocity.y = 0;
+  }
   powerupjs.AnimatedGameObject.prototype.update.call(this, delta);
 
-  this.doPhysics();
-
-
+  if (playing.inCutscene) {
+    // this.velocity.y = 0
+  } else this.doPhysics();
 };
 
 Player.prototype.doPhysics = function () {
   // if (this.onPlatform) return;
-  if (this.onLadder) this.velocity.y = 150;
+  this.handleCollisions();
+
+  if (this.onLadder && !this.onTheGround) this.velocity.y = 150;
   else this.velocity.y += 100;
   if (this.velocity.y > 1400) this.velocity.y = 1400;
   this.handleCollisions();
@@ -90,9 +108,9 @@ Player.prototype.handleCollisions = function () {
   this.onLadder = false;
   this.onPlatform = false;
 
-  var tiles = powerupjs.GameStateManager.get(ID.game_state_playing).currentLevel.find(
-    ID.tiles
-  );
+  var tiles = powerupjs.GameStateManager.get(
+    ID.game_state_playing
+  ).currentLevel.find(ID.tiles);
   var x_floor = Math.floor((this.position.x + this.origin.x) / tiles.cellWidth);
   var y_floor = Math.floor(
     (this.position.y + this.origin.y) / tiles.cellHeight
@@ -104,8 +122,8 @@ Player.prototype.handleCollisions = function () {
       var tileBounds = new powerupjs.Rectangle(
         x * tiles.cellWidth,
         y * tiles.cellHeight,
-        tiles.cellWidth,
-        tiles.cellHeight
+        tiles.cellWidth - Math.sign(this.velocity.x) * 4 ,  //  <=== Fixes ladder bug
+        tiles.cellHeight 
       );
       if (tileType === TileType.danger) {
         var tileBounds = new powerupjs.Rectangle(
@@ -148,9 +166,75 @@ Player.prototype.handleCollisions = function () {
       }
 
       if (tileType === TileType.normal || this.onTheGround) {
+        // var rightBlock = tiles.getTileType(x + 1, y);
+        // console.log(rightBlock)
+        // if (rightBlock === TileType.ladder) return
+        if (depth.y > 40) return
         this.position.y += depth.y + 1;
       }
     }
+
+  // ------LADDER PHYSICS------- //
+
+  for (var y = y_floor - 2; y < y_floor + 2; y++)
+    for (var x = x_floor - 2; x <= x_floor + 2; x++) {
+      var tileType = tiles.getTileType(x, y);
+      if (tileType === TileType.background) continue;
+      var tileBounds = new powerupjs.Rectangle(
+        x * tiles.cellWidth,
+        y * tiles.cellHeight,
+        tiles.cellWidth,
+        tiles.cellHeight
+      );
+      var boundingBox = this.boundingBox;
+      boundingBox.height += 1;
+      var depth = boundingBox.calculateIntersectionDepth(tileBounds);
+      if (boundingBox.intersects(tileBounds) && tileType === TileType.ladder) {
+        this.onLadder = true;
+        return;
+      }
+    }
+
+  for (
+    var i = 0;
+    i <
+    powerupjs.GameStateManager.currentGameState.currentLevel.movingPlatforms
+      .listLength;
+    i++
+  ) {
+    var platform =
+      powerupjs.GameStateManager.currentGameState.currentLevel.movingPlatforms.at(
+        i
+      );
+    var platRect = new powerupjs.Rectangle(
+      platform.position.x,
+      platform.position.y,
+      platform.width,
+      platform.height
+    );
+    platRect.draw();
+    this.boundingBox.draw();
+    if (
+      this.position.y + this.height / 2 > platform.position.y &&
+      this.oldPos.y <= platform.position.y
+    ) {
+      if (
+        this.position.x > platform.position.x &&
+        this.position.x < platform.position.x + platform.width
+      ) {
+        var depth = platRect.calculateIntersectionDepth(this.boundingBox);
+        this.onPlatform = true;
+        // this.position.y -= Math.abs(depth.y);
+        this.velocity.y = 0;
+        this.velocity.x += platform.velocity.x - this.velocity.x;
+        this.position.y -= depth.y - 1;
+        this.velocity.y = platform.velocity.y;
+      }
+    }
+  }
+
+  // ------LADDER PHYSICS------- //
+
   for (var y = y_floor - 2; y < y_floor + 1; y++)
     for (var x = x_floor - 1; x <= x_floor + 1; x++) {
       var tileType = tiles.getTileType(x, y);
@@ -208,6 +292,8 @@ Player.prototype.handleCollisions = function () {
     }
   }
 
+  // ------------MOVING PLATFORM PHYSICS----------- //
+
   for (
     var i = 0;
     i <
@@ -233,7 +319,7 @@ Player.prototype.handleCollisions = function () {
         this.position.x > platform.position.x &&
         this.position.x < platform.position.x + platform.width
       ) {
-        this.onTheGround = true
+        this.onTheGround = true;
         var depth = platRect.calculateIntersectionDepth(this.boundingBox);
         this.velocity.y = 0;
         this.position.y -= depth.y - 1;
@@ -246,10 +332,13 @@ Player.prototype.handleCollisions = function () {
   this.onLadder = false;
 };
 
-Player.prototype.draw = function() {
+Player.prototype.draw = function () {
   powerupjs.AnimatedGameObject.prototype.draw.call(this);
   if (this.isByInteractable) {
-    this.interactMarker.position = new powerupjs.Vector2(this.position.x, this.position.y - 100)
-    this.interactMarker.draw()
+    this.interactMarker.position = new powerupjs.Vector2(
+      this.position.x,
+      this.position.y - 100
+    );
+    this.interactMarker.draw();
   }
-}
+};

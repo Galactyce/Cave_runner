@@ -4,11 +4,21 @@ function PlayingState() {
   this.currentLevelIndex = 0;
   this.levelIDs = [];
   this.levels = [];
-  this.spawnPos = new powerupjs.Vector2(200, 200);
+  this.cutscenes = [];
+  this.spawnPos = new powerupjs.Vector2(200, 700);
   this.currentCheckpoint = undefined;
+  this.inCutscene = false;
   this.levelEntered = undefined;
-  this.loadLevelsStatus();
   this.writeLevelsStatus();
+  this.loadLevelsStatus();
+
+  for (var k=0; k<window.LEVELS.length; k++) {
+  for (var i=0; i<window.LEVELS[k].cutscenes.length; i++) {
+    this.cutscenes.push(new Cutscene(window.LEVELS[k].cutscenes[i].parts, window.LEVELS[k].cutscenes[i].rect, window.LEVELS[k].cutscenes[i].triggerArea, 
+    window.LEVELS[k].cutscenes[i].triggerID, window.LEVELS[k].cutscenes[i].reusable))
+  }
+}
+
   this.loadLevels();
 
   for (var level = 0; level < window.LEVELS.length; level++) {
@@ -20,7 +30,6 @@ function PlayingState() {
     }
     for (var i = 0; i < window.LEVELS[level].platforms.length; i++) {
       if (window.LEVELS[level].platforms[i].active) {
-        alert()
         this.levels[level].platforms.at(i).activated = true;
         console.log(this.levels[level].platforms.at(i))
       }
@@ -42,11 +51,20 @@ PlayingState.prototype.loadPlayer = function () {
 PlayingState.prototype.hardReset = function () {
   for (var i = 0; i < window.LEVELS.length; i++) {
     window.LEVELS[i].checked = false;
+    for (var p=0; p<window.LEVELS[i].platforms.length; p++) {
+    window.LEVELS[i].platforms[p].active = false
+    }
     alert("resetting");
   }
   this.writeLevelsStatus();
   window.location.reload();
 };
+
+PlayingState.prototype.endCutscene = function (id) {
+  var cutscene = this.cutscenes[id]
+
+};
+
 
 Object.defineProperty(PlayingState.prototype, "currentLevel", {
   get: function () {
@@ -92,12 +110,12 @@ PlayingState.prototype.goToLevel = function (levelIndex) {
   if (levelIndex < 0 || levelIndex >= window.LEVELS.length) return;
   // if (doorEntered !== null)
   // this.currentLevelIndex = doorEntered.ID
-  this.levelIDs[levelIndex] = this.levels[levelIndex];
-  this.currentLevelIndex = levelIndex;
+ this.currentLevelIndex = levelIndex;
+this.levelIDs[levelIndex] = this.levels[levelIndex];
   for (var i = 0; i < window.LEVELS.length; i++) {
     this.levels[i].levelData.entered = false;
   }
-  this.currentLevel.levelData.entered = true;
+  //  this.currentLevel.levelData.entered = true;
   //  alert(this.currentLevelIndex)
   this.writeLevelsStatus();
 };
@@ -105,7 +123,6 @@ PlayingState.prototype.goToLevel = function (levelIndex) {
 PlayingState.prototype.loadLevels = function () {
   for (var currLevel = 0; currLevel < window.LEVELS.length; currLevel++) {
     this.levels.push(new Level(currLevel));
-    // alert(currLevel)
   }
 };
 

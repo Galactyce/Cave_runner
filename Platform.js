@@ -1,7 +1,6 @@
 function Platform(x, y, destX, destY, id, currLevel) {
   powerupjs.AnimatedGameObject.call(this, 1, ID.layer_objects_2);
   this.position = new powerupjs.Vector2(x, y);
-  alert(currLevel)
   this.currLevel = currLevel
   this.dest = new powerupjs.Vector2(destX, destY);
   this.activated = false
@@ -21,12 +20,12 @@ Platform.prototype.update = function(delta) {
     powerupjs.GameStateManager.get(ID.game_state_playing).writeLevelsStatus();
 
     if (this.dest.x !== this.position.x)
-    this.velocity.x += 55;
+    this.velocity.x += 25;
     if (this.position.x > this.dest.x)
       this.position.x = this.dest.x;
 
       if (this.dest.y !== this.position.y)
-      this.velocity.y += 55;
+      this.velocity.y += 25;
       if (this.position.y > this.dest.y)
       this.position.y = this.dest.y;
     }

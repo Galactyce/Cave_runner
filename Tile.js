@@ -40,7 +40,10 @@ Tile.prototype.reset = function() {
     this.sprite = sprites.normal_spike_block;
     else if (this.dangerType === 'cave_spike') 
     this.sprite = sprites.cave_spikes;
+    else 
+    this.visible = false;
     this.type = TileType.danger
+    
   }
   else if (this.typeBlock === 'ladder') {
     this.visible = true

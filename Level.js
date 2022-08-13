@@ -11,6 +11,8 @@ var tiles = new TileFeild(currlevel, ID.tiles, this.levelData, this);
   this.add(this.cave_deco)
   this.moss_deco = new MossDecoFeild(currlevel, 10, this.decoData, this)
   this.add(this.moss_deco);
+  this.lava_deco = new LavaDecoFeild(currlevel, 10, this.decoData, this)
+  this.add(this.lava_deco)
   this.enemies = new EnemyField(currlevel, 10, this.enemyData, this)
   this.add(this.enemies)
   this.movingPlatforms = new powerupjs.GameObjectList(ID.layer_overlays);
@@ -33,29 +35,38 @@ var tiles = new TileFeild(currlevel, ID.tiles, this.levelData, this);
   }
   this.add(this.platforms)
   this.add(tiles);
-  var backgroundBack = new powerupjs.SpriteGameObject(
-    sprites.cave_background_back,
+  var backgroundBack = new powerupjs.AnimatedGameObject(
     0.9,
-    0,
     ID.layer_background
   );
+  backgroundBack.loadAnimation(sprites.cave_background_backs[this.levelData.backgrounds[1]],  'play',true, 0.25);
+  backgroundBack.playAnimation('play')
   this.add(backgroundBack);
   var backgroundFront = new powerupjs.SpriteGameObject(
-    sprites.cave_background_front,
+    sprites.cave_background_fronts[this.levelData.backgrounds[0]],
     0.9,
     0,
-    ID.layer_background_1
+    ID.layer_background_2
   );
   this.add(backgroundFront);
   this.doorEntered = doorEntered;
+
+
 }
 
 Level.prototype = Object.create(powerupjs.GameObjectList.prototype);
 
 
 
-Level.prototype.update = function (delta) {
+Level.prototype.update = function (delta) { 
+  for (var i=0; i<powerupjs.GameStateManager.get(ID.game_state_playing).cutscenes.length; i++) {
+    if (powerupjs.GameStateManager.get(ID.game_state_playing).inCutscene)
+    powerupjs.GameStateManager.get(ID.game_state_playing).cutscenes[i].update()
+  }
+  
+  if (this.inCutscene) return;
   powerupjs.GameObjectList.prototype.update.call(this, delta);
+
   var playingState = powerupjs.GameStateManager.get(ID.game_state_playing);
   var player = playingState.player;
   for (var i = 0; i < this.levelData.doors.length; i++) {
@@ -72,6 +83,19 @@ Level.prototype.update = function (delta) {
       break
     }
   }
+  // for (var i=0; i<powerupjs.GameStateManager.get(ID.game_state_playing).cutscenes.length; i++) { 
+  // var playingState = powerupjs.GameStateManager.get(ID.game_state_playing);
+  // var player = playingState.player;
+  // var hitbox = new powerupjs.Rectangle(playingState.cutscenes[i].rect.x, playingState.cutscenes[i].rect.y,
+  //   playingState.cutscenes[i].rect.width, playingState.cutscenes[i].rect.height)
+  // if (hitbox.intersects(player.boundingBox)) {
+  //   powerupjs.GameStateManager.get(ID.game_state_playing).inCutscene = true;
+  //   var playing = powerupjs.GameStateManager.get(ID.game_state_playing);
+
+  // // alert(playing.levels[playing.currentLevelIndex].inCutscene)
+  // }
+  // }
+
 };
 
 

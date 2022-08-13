@@ -37,12 +37,15 @@ Game.prototype.loadAssets = function() {
 Game.prototype.mainLoop = function() {
   var delta = 1 / 50 
    this.totalTime += 1000/50
+  var timeStart = Date.now()
   powerupjs.Canvas.clear();
   powerupjs.GameStateManager.handleInput(delta)
   powerupjs.GameStateManager.update(delta);
   powerupjs.GameStateManager.draw();
   powerupjs.Keyboard.reset()
   powerupjs.Mouse.reset()
+  // if (Date.now() - timeStart > 500) console.log(Date.now() - timeStart)
+
   setTimeout(powerupjs.Game.mainLoop, 1000/50)
 }
 

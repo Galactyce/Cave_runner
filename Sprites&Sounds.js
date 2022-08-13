@@ -24,9 +24,23 @@ powerupjs.Game.loadAssets = function() {
   var loadSprite = function(img, collisionMask) {
     return new SpriteSheet("Sprites/" + img, collisionMask)
   }
+
+  sprites.cave_background_fronts = {
+    '0': loadSprite("empty_background.png"),
+    '1': loadSprite("cave_background_front.png")
+  }
+
+
+
+  sprites.cave_background_backs = {
+    '0': loadSprite("empty_background.png"),
+    '1': loadSprite("cave_background_back.png"),
+    '2': loadSprite("cave_background_back2@3.png"),
+    '3': loadSprite("cave_background_back3@3.png")
+
+  }
+
   sprites.interact_marker = loadSprite('interact_marker.png');
-  sprites.cave_background_front = loadSprite("cave_background_front.png");
-  sprites.cave_background_back = loadSprite("cave_background_back.png");
   sprites.normal_spike_block = loadSprite("normal_spike_block.png");
   sprites.cave_spikes = loadSprite("cave_spikes.png");
   sprites.platform = loadSprite('platform.png');
@@ -47,5 +61,9 @@ powerupjs.Game.loadAssets = function() {
   sprites.flying_bomb_lit = loadSprite('flying_bomb_lit@2.png');
   sprites.explode = loadSprite('explode@5.png');
   sprites.slime_bouncing = loadSprite('green_slime@2.png')
-  sprites.moving_platform = loadSprite('moving_platform.png')
+  sprites.moving_platform = loadSprite('moving_platform.png');
+  sprites.moving_platform_small = loadSprite('moving_platform_small.png')
+  sprites.lava_surface = loadSprite('lava_surface@2.png')
+  sprites.lava_idle = loadSprite('lava_deep.png')
+
 }
