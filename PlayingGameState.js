@@ -1,16 +1,18 @@
 function PlayingState() {
   powerupjs.GameObject.call(this);
 
-  this.currentLevelIndex = 0;
+  this.currentLevelIndex = 6;
   this.levelIDs = [];
   this.levels = [];
   this.cutscenes = [];
-  this.spawnPos = new powerupjs.Vector2(200, 700);
+  this.spawnPos = new powerupjs.Vector2(200, 200);
   this.currentCheckpoint = undefined;
   this.inCutscene = false;
   this.levelEntered = undefined;
   this.writeLevelsStatus();
+
   this.loadLevelsStatus();
+
 
   for (var k=0; k<window.LEVELS.length; k++) {
   for (var i=0; i<window.LEVELS[k].cutscenes.length; i++) {
@@ -54,7 +56,7 @@ PlayingState.prototype.hardReset = function () {
     for (var p=0; p<window.LEVELS[i].platforms.length; p++) {
     window.LEVELS[i].platforms[p].active = false
     }
-    alert("resetting");
+    //lert("resetting");
   }
   this.writeLevelsStatus();
   window.location.reload();
@@ -99,12 +101,7 @@ PlayingState.prototype.reset = function () {
   this.player.reset();
 };
 
-PlayingState.prototype.nextLevel = function () {
-  if (this.currentLevelIndex >= window.LEVELS.length - 1) return;
-  this.goToLevel(this.currentLevelIndex + 1);
-  window.LEVELS[this.currentLevelIndex].locked = false;
-  this.writeLevelsStatus();
-};
+
 
 PlayingState.prototype.goToLevel = function (levelIndex) {
   if (levelIndex < 0 || levelIndex >= window.LEVELS.length) return;

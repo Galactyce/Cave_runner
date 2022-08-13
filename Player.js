@@ -122,7 +122,7 @@ Player.prototype.handleCollisions = function () {
       var tileBounds = new powerupjs.Rectangle(
         x * tiles.cellWidth,
         y * tiles.cellHeight,
-        tiles.cellWidth - Math.sign(this.velocity.x) * 4 ,  //  <=== Fixes ladder bug
+        tiles.cellWidth ,//- Math.sign(this.velocity.x) * 4 ,  //  <=== Fixes ladder bug
         tiles.cellHeight 
       );
       if (tileType === TileType.danger) {

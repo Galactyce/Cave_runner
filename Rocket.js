@@ -8,7 +8,7 @@ function Rocket(position, leftShot) {
   this.loadAnimation(sprites.explode, "explode", false, 0.03);
   this.loadAnimation(sprites.rocket, "flying", true, 1);
   this.playAnimation("flying");
-  this.reset();
+  // this.reset();
 }
 
 Rocket.prototype = Object.create(powerupjs.AnimatedGameObject.prototype);
