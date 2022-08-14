@@ -30,7 +30,7 @@ Player.prototype.reset = function () {
 Player.prototype.handleInput = function () {
   var playing = powerupjs.GameStateManager.get(ID.game_state_playing);
   if (playing.inCutscene) return;
-  if (powerupjs.Keyboard.keys[37].down) {
+  if (powerupjs.Keyboard.keys[37].down || powerupjs.Keyboard.keys[65].down) {
     // if (this.onLadder) {
     //   if (this.velocity.y !== 0) return
     // }
@@ -39,7 +39,7 @@ Player.prototype.handleInput = function () {
     if (this.velocity.x < -700) this.velocity.x = -500;
     if (this.onPlatform) this.velocity.x = -500;
     this.playAnimation("run");
-  } else if (powerupjs.Keyboard.keys[39].down) {
+  } else if (powerupjs.Keyboard.keys[39].down || powerupjs.Keyboard.keys[68].down) {
     this.mirror = false;
     this.velocity.x += 105;
     if (this.velocity.x > 700) this.velocity.x = 500;
@@ -48,14 +48,6 @@ Player.prototype.handleInput = function () {
   } else {
     if (!this.onPlatform) this.velocity.x = 0;
     this.playAnimation("idle");
-  }
-  if (powerupjs.Keyboard.keys[65].pressed) {
-    powerupjs.GameStateManager.get(ID.game_state_playing).hardReset();
-  }
-  if (powerupjs.Keyboard.keys[66].pressed) {
-    powerupjs.GameStateManager.get(ID.game_state_playing).writeLevelsStatus();
-    powerupjs.GameStateManager.get(ID.game_state_playing).loadLevelsStatus();
-    window.location.reload();
   }
   if (powerupjs.Keyboard.keys[38].down && this.onLadder) {
     this.velocity.y = -200;

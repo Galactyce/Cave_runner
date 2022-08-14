@@ -51,17 +51,7 @@ PlayingState.prototype.loadPlayer = function () {
   powerupjs.Game.started = true;
 };
 
-PlayingState.prototype.hardReset = function () {
-  for (var i = 0; i < window.LEVELS.length; i++) {
-    window.LEVELS[i].checked = false;
-    for (var p=0; p<window.LEVELS[i].platforms.length; p++) {
-    window.LEVELS[i].platforms[p].active = false
-    }
-    alert("resetting");
-  }
-  this.writeLevelsStatus();
-  window.location.reload();
-};
+
 
 PlayingState.prototype.endCutscene = function (id) {
   var cutscene = this.cutscenes[id]
