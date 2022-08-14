@@ -29,7 +29,10 @@ Player.prototype.reset = function () {
 
 Player.prototype.handleInput = function () {
   var playing = powerupjs.GameStateManager.get(ID.game_state_playing);
-  if (playing.inCutscene) return;
+  if (playing.inCutscene) {
+  this.onLadder = false;
+  return;
+  }
   if (powerupjs.Keyboard.keys[37].down || powerupjs.Keyboard.keys[65].down) {
     // if (this.onLadder) {
     //   if (this.velocity.y !== 0) return
@@ -49,7 +52,7 @@ Player.prototype.handleInput = function () {
     if (!this.onPlatform) this.velocity.x = 0;
     this.playAnimation("idle");
   }
-  if (powerupjs.Keyboard.keys[38].down || powerupjs.Keyboard.keys[87].down && this.onLadder) {
+  if ((powerupjs.Keyboard.keys[38].down || powerupjs.Keyboard.keys[87].down )&& this.onLadder) {
     this.velocity.y = -200;
   }
   if (
