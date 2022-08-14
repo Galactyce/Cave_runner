@@ -50,6 +50,7 @@ powerupjs.Game.loadAssets = function() {
   sprites.cave_platform = loadSprite('cave_platform.png');
   sprites.ladder = loadSprite('ladder_tile.png')
   sprites.block = loadSprite('block.png');
+  sprites.demo_end = loadSprite('demo_end.png');
   sprites.single_cave_tile = loadSprite('single_cave_tile.png')
   sprites.idle = loadSprite("character_idle.png");
   sprites.climb = loadSprite("character_climbing@4.png");

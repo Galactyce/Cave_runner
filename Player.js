@@ -29,10 +29,12 @@ Player.prototype.reset = function () {
 
 Player.prototype.handleInput = function () {
   var playing = powerupjs.GameStateManager.get(ID.game_state_playing);
-  if (playing.inCutscene) {
-  this.onLadder = false;
-  return;
+  for (var i=0; i<playing.levels.length; i++) { 
+  if (playing.levels[i].inCutscene) {
+    return;
   }
+}
+  
   if (powerupjs.Keyboard.keys[37].down || powerupjs.Keyboard.keys[65].down) {
     // if (this.onLadder) {
     //   if (this.velocity.y !== 0) return
@@ -71,11 +73,19 @@ Player.prototype.handleInput = function () {
 Player.prototype.update = function (delta) {
   var playing = powerupjs.GameStateManager.get(ID.game_state_playing);
 
-  if (playing.inCutscene) {
+  if (playing.currentLevel.inCutscene) {
+    console.log('afd')
     this.velocity.x = 0;
     this.velocity.y = 0;
   }
   powerupjs.AnimatedGameObject.prototype.update.call(this, delta);
+  
+  for (var i=0; i<playing.cutscenes.length; i++) {
+    var cutscene = playing.cutscenes[i];
+    if (this.boundingBox.intersects(cutscene.rect)) {
+      playing.levels[cutscene.startRoom].inCutscene = true
+    }
+  }
 
   if (playing.inCutscene) {
     // this.velocity.y = 0

@@ -24,6 +24,7 @@ Game.prototype.assetLoadingLoop = function() {
     // Game.gameWorld = new GameWorld();
     ID.game_state_playing = powerupjs.GameStateManager.add(new PlayingState());
     // ID.game_state_cutscene = powerupjs.GameStateManager.add(new CutsceneState());
+    console.log(sprites.demo_end)
     powerupjs.GameStateManager.switchTo(ID.game_state_playing);
     powerupjs.Game.mainLoop();
   }

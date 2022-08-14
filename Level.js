@@ -60,8 +60,9 @@ Level.prototype = Object.create(powerupjs.GameObjectList.prototype);
 
 Level.prototype.update = function (delta) { 
   for (var i=0; i<powerupjs.GameStateManager.get(ID.game_state_playing).cutscenes.length; i++) {
-    if (powerupjs.GameStateManager.get(ID.game_state_playing).inCutscene)
+    if (this.inCutscene) {
     powerupjs.GameStateManager.get(ID.game_state_playing).cutscenes[i].update()
+    }
   }
   
   if (this.inCutscene) return;

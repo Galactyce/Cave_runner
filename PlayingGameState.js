@@ -5,6 +5,7 @@ function PlayingState() {
   this.levelIDs = [];
   this.levels = [];
   this.cutscenes = [];
+  this.overlays = [];
   this.spawnPos = new powerupjs.Vector2(200, 700);
   this.currentCheckpoint = undefined;
   this.inCutscene = false;
@@ -83,10 +84,15 @@ PlayingState.prototype.update = function (delta) {
 PlayingState.prototype.draw = function () {
   this.currentLevel.draw();
   this.player.draw();
-  this.currentLevel.enemies.draw();
 
   this.currentLevel.moss_deco.draw();
+  this.currentLevel.enemies.draw();
+
   this.currentLevel.lava_deco.draw()
+  console.log(this.overlays.length)
+  for (var i=0; i<this.overlays.length; i++)  {
+    this.overlays[i].draw()
+}
 };
 
 PlayingState.prototype.reset = function () {

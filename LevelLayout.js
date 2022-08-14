@@ -195,7 +195,9 @@ window.LEVELS.push({
   levers: [],
   backgrounds: [1, 4],
   platforms: [],
-  cutscenes: [],
+  cutscenes: [{parts: new Array(['hideplayer', 0],
+   ['showimage', new powerupjs.Vector2(0, 0), sprites.demo_end, 0]),
+   rect: new powerupjs.Rectangle(20, 60, 20, 120), triggerArea: 6, triggerID: 0, reusable: false}],
   doors : [{x: 1440, y: 60, width: 40, height: 120, destX: 60, destY: 100, ID: 5}],
   tiles: [
          
