@@ -9,9 +9,9 @@ function PlayingState() {
   this.currentCheckpoint = undefined;
   this.inCutscene = false;
   this.levelEntered = undefined;
+  this.loadLevelsStatus();
 
   this.writeLevelsStatus();
- // this.loadLevelsStatus();
 
 
 
