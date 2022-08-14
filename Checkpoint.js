@@ -1,26 +1,27 @@
 function Checkpoint(position, currLevel) {
-  powerupjs.SpriteGameObject.call(
+  powerupjs.AnimatedGameObject.call(
     this,
-    sprites.checkpoint,
     1,
-    0,
     ID.layer_objects_1,
     ID.checkpoints
   );
+  this.loadAnimation(sprites.checkpoint_campfire, 'lit', true, 0.25)
+  this.loadAnimation(sprites.checkpoint_campfire_unlit, 'unlit', true, 1);
+  this.playAnimation('unlit')
+  this.sheetIndex = 0
   this.position = position;
   this.currLevel = currLevel;
   this.spawnPosition = position;
   this.grabbed = false;
 }
 
-Checkpoint.prototype = Object.create(powerupjs.SpriteGameObject.prototype);
+Checkpoint.prototype = Object.create(powerupjs.AnimatedGameObject.prototype);
 
-Checkpoint.prototype.draw = function () {
-  powerupjs.SpriteGameObject.prototype.draw.call(this);
-};
+
 
 Checkpoint.prototype.update = function (delta) {
-  powerupjs.SpriteGameObject.prototype.update.call(this, delta);
+  powerupjs.AnimatedGameObject.prototype.update.call(this, delta);
+  if (!this.grabbed) this.playAnimation('unlit')
   var player = powerupjs.GameStateManager.currentGameState.player;
   if (this.boundingBox.intersects(player.boundingBox) && !this.grabbed) {
     player.isByInteractable = true;
@@ -42,7 +43,7 @@ Checkpoint.prototype.update = function (delta) {
       
     }
     powerupjs.GameStateManager.get(ID.game_state_playing).writeLevelsStatus();
-
+    this.playAnimation('lit')
   }
   }
   else {

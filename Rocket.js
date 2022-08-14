@@ -8,7 +8,7 @@ function Rocket(position, leftShot) {
   this.loadAnimation(sprites.explode, "explode", false, 0.03);
   this.loadAnimation(sprites.rocket, "flying", true, 1);
   this.playAnimation("flying");
-  // this.reset();
+  this.reset();
 }
 
 Rocket.prototype = Object.create(powerupjs.AnimatedGameObject.prototype);
@@ -41,8 +41,9 @@ Rocket.prototype.update = function (delta) {
 Rocket.prototype.handleCollisions = function () {
   var tiles = this.root.find(ID.tiles);
   var floorX = Math.floor(this.position.x / tiles.cellWidth);
-  var floorY = Math.ceil(this.position.y / tiles.cellHeight);
-  console.log(floorY)
+  var floorY = Math.floor(this.position.y / tiles.cellHeight);
+  // console.log(floorY)
+
     for (var x = floorX - 2; x < floorX + 2; x++) {
       var tileBounds = new powerupjs.Rectangle(
         x * tiles.cellWidth,

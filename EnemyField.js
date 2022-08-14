@@ -28,11 +28,14 @@ EnemyField.prototype.loadEnemy = function(type, x, y) {
 
     case "F":
       return new FlyingBomb(new powerupjs.Vector2(x, y))
+      
+    case "J":
+      return new Flame(new powerupjs.Vector2(x, y))
     case 'S': 
       return new SlimePatrolling(new powerupjs.Vector2(x, y))   
-    case 'R': 
+    case 'R':
       return new Rocket(new powerupjs.Vector2(x + 20, y + 10), false)
-    case 'L':
+    case 'L': 
       return new Rocket(new powerupjs.Vector2(x - 20, y + 10), true);   
     default: return new Tile('background', new powerupjs.Vector2(x, y))
   }

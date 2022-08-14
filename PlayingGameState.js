@@ -1,17 +1,18 @@
 function PlayingState() {
   powerupjs.GameObject.call(this);
 
-  this.currentLevelIndex = 6;
+  this.currentLevelIndex = 0;
   this.levelIDs = [];
   this.levels = [];
   this.cutscenes = [];
-  this.spawnPos = new powerupjs.Vector2(200, 200);
+  this.spawnPos = new powerupjs.Vector2(200, 700);
   this.currentCheckpoint = undefined;
   this.inCutscene = false;
   this.levelEntered = undefined;
-  this.writeLevelsStatus();
 
+  this.writeLevelsStatus();
   this.loadLevelsStatus();
+
 
 
   for (var k=0; k<window.LEVELS.length; k++) {
@@ -56,7 +57,7 @@ PlayingState.prototype.hardReset = function () {
     for (var p=0; p<window.LEVELS[i].platforms.length; p++) {
     window.LEVELS[i].platforms[p].active = false
     }
-    //lert("resetting");
+    alert("resetting");
   }
   this.writeLevelsStatus();
   window.location.reload();
@@ -92,8 +93,10 @@ PlayingState.prototype.update = function (delta) {
 PlayingState.prototype.draw = function () {
   this.currentLevel.draw();
   this.player.draw();
-  this.currentLevel.moss_deco.draw();
   this.currentLevel.enemies.draw();
+
+  this.currentLevel.moss_deco.draw();
+  this.currentLevel.lava_deco.draw()
 };
 
 PlayingState.prototype.reset = function () {

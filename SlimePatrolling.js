@@ -12,7 +12,7 @@ function SlimePatrolling(position) {
 SlimePatrolling.prototype = Object.create(powerupjs.AnimatedGameObject.prototype);
 
 SlimePatrolling.prototype.reset = function() {
-  this.velocity.x = 400
+  this.velocity.x = 300
 }
 
 
@@ -38,7 +38,7 @@ SlimePatrolling.prototype.update = function(delta) {
       // }
   
     var player = powerupjs.GameStateManager.get(ID.game_state_playing).player;
-    var boundingBox = new powerupjs.Rectangle(this.position.x + 10, this.position.y + 10, this.width / 2- 20, this.height - 20)
+    var boundingBox = new powerupjs.Rectangle(this.position.x - 20, this.position.y + 10, this.width - 40, this.height - 20)
     if (boundingBox.intersects(player.boundingBox)) {
       player.reset()
     }

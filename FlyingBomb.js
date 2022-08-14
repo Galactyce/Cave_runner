@@ -57,6 +57,8 @@ FlyingBomb.prototype.draw = function () {
 };
 
 FlyingBomb.prototype.update = function (delta) {
+  if (!(Date.now() > this.spawnTime + 5000)) return
+
   powerupjs.AnimatedGameObject.prototype.update.call(this, delta);
 
   if (!this.lit) {
@@ -81,7 +83,8 @@ FlyingBomb.prototype.update = function (delta) {
   var distanceX =
   (player.position.x - player.origin.x) - this.position.x - this.origin.x;
   var distanceY =
-  (player.position.y - player.origin.y) - this.position.y - this.origin.y;
+  (player.position.y - player.origin.y) - this.position.y - this.origin.y -
+   ((player.position.y - player.origin.y) - this.position.y - this.origin.y) / 2;
   if (Math.abs(distanceX) < 100 && Math.abs(distanceY)  < 100 && Date.now() > this.waitTime + 1000) {
     if (!this.lit) {
       this.explodeTime = Date.now();

@@ -36,7 +36,8 @@ powerupjs.Game.loadAssets = function() {
     '0': loadSprite("empty_background.png"),
     '1': loadSprite("cave_background_back.png"),
     '2': loadSprite("cave_background_back2@3.png"),
-    '3': loadSprite("cave_background_back3@3.png")
+    '3': loadSprite("cave_background_back3@3.png"),
+    '4': loadSprite("cave_background_back4@4.png")
 
   }
 
@@ -44,16 +45,21 @@ powerupjs.Game.loadAssets = function() {
   sprites.normal_spike_block = loadSprite("normal_spike_block.png");
   sprites.cave_spikes = loadSprite("cave_spikes.png");
   sprites.platform = loadSprite('platform.png');
-  sprites.checkpoint = loadSprite('checkpoint_gem.png')
+  sprites.checkpoint_campfire = loadSprite('checkpoint_campfire@4.png')
+  sprites.checkpoint_campfire_unlit = loadSprite('checkpoint_campfire_unlit.png')
   sprites.cave_platform = loadSprite('cave_platform.png');
   sprites.ladder = loadSprite('ladder_tile.png')
   sprites.block = loadSprite('block.png');
   sprites.single_cave_tile = loadSprite('single_cave_tile.png')
   sprites.idle = loadSprite("character_idle.png");
+  sprites.climb = loadSprite("character_climbing@4.png");
   sprites.run = loadSprite("character_run@4.png");
   sprites.text_box = loadSprite("text_box.png");
   sprites.lever_inactive = loadSprite("lever_inactive.png");
   sprites.rocket = loadSprite("rocket.png");
+  sprites.rocket_base = loadSprite("rocket_base.png");
+  sprites.flame_rising = loadSprite("flame_rising@2.png");
+  sprites.flame_falling = loadSprite("flame_falling@2.png");
   sprites.lever_pull = loadSprite("leverflip@3.png");
   sprites.cave_tiles = loadSprite('cave-tiles@32.png');
   sprites.moss_tiles = loadSprite('moss@3.png')
