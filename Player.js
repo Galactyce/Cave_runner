@@ -54,7 +54,7 @@ Player.prototype.handleInput = function () {
   }
   if (
     powerupjs.Keyboard.keys[32].pressed &&
-    (this.onTheGround || this.onLadder || this.onPlatform)
+    (this.onTheGround || this.onPlatform)
   ) {
     this.jump();
   }
