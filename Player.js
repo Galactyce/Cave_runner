@@ -49,7 +49,7 @@ Player.prototype.handleInput = function () {
     if (!this.onPlatform) this.velocity.x = 0;
     this.playAnimation("idle");
   }
-  if (powerupjs.Keyboard.keys[38].down && this.onLadder) {
+  if (powerupjs.Keyboard.keys[38].down || powerupjs.Keyboard.keys[82].down && this.onLadder) {
     this.velocity.y = -200;
   }
   if (
