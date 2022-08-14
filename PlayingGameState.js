@@ -11,7 +11,7 @@ function PlayingState() {
   this.levelEntered = undefined;
 
   this.writeLevelsStatus();
-  this.loadLevelsStatus();
+ // this.loadLevelsStatus();
 
 
 
