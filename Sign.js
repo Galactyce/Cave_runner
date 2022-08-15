@@ -2,7 +2,7 @@ function Sign(text, position, type) {
   this.type = typeof type !== 'undefined' ? type : 'normal'
   this.text = typeof text !== 'undefined' ? text : 'M';
   powerupjs.SpriteGameObject.call(this, sprites.sign, 1, 0, ID.layer_objects_2);
-  this.position = new powerupjs.Vector2(position.x, position.y + 25);
+  this.position = new powerupjs.Vector2(position.x, position.y + 20);
   if (this.type !== 'normal') {
   this.controls = new ControlSign(this.type);
   this.controls.position = new powerupjs.Vector2(position.x, position.y - this.controls.height)
