@@ -30,7 +30,7 @@ Player.prototype.reset = function () {
 Player.prototype.handleInput = function () {
   var playing = powerupjs.GameStateManager.get(ID.game_state_playing);
   for (var i=0; i<playing.levels.length; i++) { 
-  if (playing.levels[i].inCutscene) {
+  if (playing.inCutscene) {
     return;
   }
 }
@@ -73,8 +73,7 @@ Player.prototype.handleInput = function () {
 Player.prototype.update = function (delta) {
   var playing = powerupjs.GameStateManager.get(ID.game_state_playing);
 
-  if (playing.currentLevel.inCutscene) {
-    console.log('afd')
+  if (playing.inCutscene) {
     this.velocity.x = 0;
     this.velocity.y = 0;
   }
@@ -83,7 +82,8 @@ Player.prototype.update = function (delta) {
   for (var i=0; i<playing.cutscenes.length; i++) {
     var cutscene = playing.cutscenes[i];
     if (this.boundingBox.intersects(cutscene.rect)) {
-      playing.levels[cutscene.startRoom].inCutscene = true
+      powerupjs.GameStateManager.get(ID.game_state_playing).currentCutsceneIndex = cutscene.index
+      playing.inCutscene = true
     }
   }
 

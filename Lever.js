@@ -30,6 +30,9 @@ Lever.prototype.update = function (delta) {
           powerupjs.GameStateManager.get(
             ID.game_state_playing
           ).inCutscene = true;
+          powerupjs.GameStateManager.get(
+            ID.game_state_playing
+          ).currentCutsceneIndex = powerupjs.GameStateManager.get(ID.game_state_playing).cutscenes[i].index
         }
         this.alreadyActivated = true
       }

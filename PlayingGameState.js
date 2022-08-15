@@ -8,20 +8,26 @@ function PlayingState() {
   this.overlays = [];
   this.spawnPos = new powerupjs.Vector2(200, 700);
   this.currentCheckpoint = undefined;
+  this.currentCutsceneIndex = undefined;
   this.inCutscene = false;
   this.levelEntered = undefined;
   this.writeLevelsStatus();
   this.loadLevelsStatus();
 
-
-
-
-  for (var k=0; k<window.LEVELS.length; k++) {
-  for (var i=0; i<window.LEVELS[k].cutscenes.length; i++) {
-    this.cutscenes.push(new Cutscene(window.LEVELS[k].cutscenes[i].parts, window.LEVELS[k].cutscenes[i].rect, window.LEVELS[k].cutscenes[i].triggerArea, 
-    window.LEVELS[k].cutscenes[i].triggerID, window.LEVELS[k].cutscenes[i].reusable))
+  for (var k = 0; k < window.LEVELS.length; k++) {
+    for (var i = 0; i < window.LEVELS[k].cutscenes.length; i++) {
+      this.cutscenes.push(
+        new Cutscene(
+          window.LEVELS[k].cutscenes[i].parts,
+          window.LEVELS[k].cutscenes[i].rect,
+          window.LEVELS[k].cutscenes[i].triggerArea,
+          window.LEVELS[k].cutscenes[i].triggerID,
+          window.LEVELS[k].cutscenes[i].reusable,
+          window.LEVELS[k].cutscenes[i].index
+        )
+      );
+    }
   }
-}
 
   this.loadLevels();
 
@@ -35,7 +41,7 @@ function PlayingState() {
     for (var i = 0; i < window.LEVELS[level].platforms.length; i++) {
       if (window.LEVELS[level].platforms[i].active) {
         this.levels[level].platforms.at(i).activated = true;
-        console.log(this.levels[level].platforms.at(i))
+        console.log(this.levels[level].platforms.at(i));
       }
     }
   }
@@ -51,14 +57,6 @@ PlayingState.prototype.loadPlayer = function () {
   this.player.startRoom = this.currentLevelIndex;
   powerupjs.Game.started = true;
 };
-
-
-
-PlayingState.prototype.endCutscene = function (id) {
-  var cutscene = this.cutscenes[id]
-
-};
-
 
 Object.defineProperty(PlayingState.prototype, "currentLevel", {
   get: function () {
@@ -88,11 +86,11 @@ PlayingState.prototype.draw = function () {
   this.currentLevel.moss_deco.draw();
   this.currentLevel.enemies.draw();
 
-  this.currentLevel.lava_deco.draw()
-  console.log(this.overlays.length)
-  for (var i=0; i<this.overlays.length; i++)  {
-    this.overlays[i].draw()
-}
+  this.currentLevel.lava_deco.draw();
+  console.log(this.overlays.length);
+  for (var i = 0; i < this.overlays.length; i++) {
+    this.overlays[i].draw();
+  }
 };
 
 PlayingState.prototype.reset = function () {
@@ -100,14 +98,12 @@ PlayingState.prototype.reset = function () {
   this.player.reset();
 };
 
-
-
 PlayingState.prototype.goToLevel = function (levelIndex) {
   if (levelIndex < 0 || levelIndex >= window.LEVELS.length) return;
   // if (doorEntered !== null)
   // this.currentLevelIndex = doorEntered.ID
- this.currentLevelIndex = levelIndex;
-this.levelIDs[levelIndex] = this.levels[levelIndex];
+  this.currentLevelIndex = levelIndex;
+  this.levelIDs[levelIndex] = this.levels[levelIndex];
   for (var i = 0; i < window.LEVELS.length; i++) {
     this.levels[i].levelData.entered = false;
   }

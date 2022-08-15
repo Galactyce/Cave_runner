@@ -1,4 +1,4 @@
-function Cutscene(parts, rect, startRoom, triggerID, reusable) {
+function Cutscene(parts, rect, startRoom, triggerID, reusable, index) {
   // parts example: ['moveobject', levelID, object, index, {x, y, destX, destY, vX, vY}]
   powerupjs.GameObjectList.call(this, ID.layer_overlays_2);
   for (var i = 0; i < parts.length; i++) {
@@ -11,6 +11,7 @@ function Cutscene(parts, rect, startRoom, triggerID, reusable) {
   this.time = Date.now();
   this.step = 0;
   this.timeSpan = 0;
+  this.index = index
 }
 
 Cutscene.prototype = Object.create(powerupjs.GameObjectList.prototype);
@@ -41,7 +42,7 @@ Cutscene.prototype.update = function (delta) {
           this.step++;
           break;
       case "end":
-        this.endCutscene();
+        this.endCutscene()
         break;
     }
   }
@@ -70,6 +71,7 @@ Cutscene.prototype.endCutscene = function () {
   powerupjs.GameStateManager.get(ID.game_state_playing).goToLevel(
     this.startRoom
   );
-  powerupjs.GameStateManager.get(ID.game_state_playing).endCutscene();
   powerupjs.GameStateManager.get(ID.game_state_playing).inCutscene = false;
+  powerupjs.GameStateManager.get(ID.game_state_playing).currentCutsceneIndex = undefined;
+
 };

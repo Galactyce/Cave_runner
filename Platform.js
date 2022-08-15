@@ -16,7 +16,7 @@ Platform.prototype.update = function(delta) {
   powerupjs.AnimatedGameObject.prototype.update.call(this, delta)
   
   if (this.activated) {
-    window.LEVELS[this.currLevel].platforms[this.linkID].active = true;
+    window.LEVELS[this.currLevel].platforms[this.linkID - 1].active = true;
     powerupjs.GameStateManager.get(ID.game_state_playing).writeLevelsStatus();
 
     if (this.dest.x !== this.position.x)
