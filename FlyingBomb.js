@@ -7,10 +7,9 @@ function FlyingBomb(position) {
   this.position = position;
   this.startPosition = position;
   this.playAnimation("flying");
-  this.origin = new powerupjs.Vector2(
-    this.sprite.width / 2,
-    this.sprite.height / 2
-  );
+
+  this.origin = new powerupjs.Vector2(this.width / 2, this.height / 2)
+
   this.waitTime = Date.now()
   this.exploding = false;
   this.lit = false;
@@ -98,6 +97,10 @@ FlyingBomb.prototype.update = function (delta) {
     if (Date.now() >= this.explodeTime + 1000) {
       if (!this.exploding) {
       this.playAnimation('explode')
+      this.origin = new powerupjs.Vector2(
+        this.sprite.width / 2,
+        this.sprite.height / 2
+      );
       this.animateTime = Date.now();
       this.exploding = true
     }
