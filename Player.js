@@ -55,12 +55,20 @@ Player.prototype.handleInput = function () {
   if ((powerupjs.Keyboard.keys[38].down || powerupjs.Keyboard.keys[87].down )&& this.onLadder) {
     this.velocity.y = -200;
   }
-  if (
-    powerupjs.Keyboard.keys[32].pressed &&
-    (this.onTheGround || this.onPlatform)
-  ) {
-    this.jump();
+  if (powerupjs.Keyboard.keys[32].pressed) {
+    this.startJumping = true
   }
+  if (
+     powerupjs.Keyboard.keys[32].down &&
+     (this.onTheGround || this.onPlatform) &&
+     this.startJumping
+  ) {
+    this.jumping = true
+  } if (!powerupjs.Keyboard.keys[32].down) {
+    this.jumping = false
+  }
+
+  if (this.jumping)    this.jump();
 
   this.origin = new powerupjs.Vector2(
     this.sprite.width / 2,
@@ -90,17 +98,22 @@ Player.prototype.update = function (delta) {
 Player.prototype.doPhysics = function () {
   // if (this.onPlatform) return;
   this.handleCollisions();
-
+  if (!this.jumping) {
   if (this.onLadder && !this.onTheGround) {
     this.velocity.y = 150;
   }
   else this.velocity.y += 100;
   if (this.velocity.y > 1000) this.velocity.y = 1000;
+}
   this.handleCollisions();
 };
 
 Player.prototype.jump = function () {
-  this.velocity.y -= 1150;
+  this.velocity.y -= 200;
+  if (this.velocity.y < -800) {
+    this.jumping = false;
+    return
+  }
   this.jumping = true;
   this.onLadder = false;
 };
@@ -162,6 +175,8 @@ Player.prototype.handleCollisions = function () {
           this.reset();
           this.jumping = false;
         } else {
+          this.startJumping = false
+
           this.onTheGround = true;
           this.velocity.y = 0;
         }
