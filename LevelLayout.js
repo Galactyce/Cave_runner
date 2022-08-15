@@ -3,7 +3,7 @@ window.LEVELS = []
 // # = Block
 // @ = Door
 // - = Platform
-// D = Danger\
+// D = Danger
 // K = Spike Block
 // H = Ladder
 // . = background
@@ -21,6 +21,9 @@ window.LEVELS.push({
   doors : [{x: 1440, y: 120, width: 60, height: 60,  destX: 160, destY: 120, ID: 1},
     {x: -30, y: 360, width: 60, height: 60,  destX: 1360, destY: 300, ID: 2}],
   platforms: [],
+  signs: [{text: '', pos: new powerupjs.Vector2(200, 700), type: 'walking'}, 
+  {text: '', pos: new powerupjs.Vector2(1000, 700), type: 'jumping'},
+  {text: '', pos: new powerupjs.Vector2(200, 275), type: 'warning'}],
   tiles: [
          
           "########################",
@@ -48,6 +51,7 @@ window.LEVELS.push({
   cutscenes: [],
   levers: [],
   platforms: [],
+  signs: [],
   doors : [{x: -20, y: 160, width: 80, height: 80, destX: 1360, destY: 120, ID: 0},
      {x: 240, y: 830, width: 60, height: 60, destX: 240, destY: 60, ID: 3}],
   tiles: [
@@ -75,6 +79,7 @@ window.LEVELS.push({
   movingPlatforms: [],
   backgrounds: [0, 3],
   levers: [],
+  signs: [],
   cutscenes: [
     {parts: new Array(['hideplayer', 0], ['switchroom', 2000, 2], ['end']), rect: new powerupjs.Rectangle(0, 0, 1, 1), 
     triggerArea: 3, triggerID: 1, reusable: false, index: 0}
@@ -111,6 +116,7 @@ window.LEVELS.push({
   platforms: [],
   backgrounds: [0, 2],
   cutscenes: [],
+  signs: [],
   doors : [{x: 240, y: -70, width: 60, height: 60, destX: 240, destY: 780, ID: 1}],
   tiles: [
          
@@ -140,6 +146,7 @@ window.LEVELS.push({
   platforms: [],
   backgrounds: [1, 1],
   cutscenes: [],
+  signs: [],
   doors : [{x: 1380, y: 180, width: 40, height: 120, destX: 60, destY: 180, ID: 2}, {x: 1350, y: 820, width: 40, height: 120, destX: 1350, destY: 90, ID: 5}],
   tiles: [
          
@@ -168,6 +175,7 @@ window.LEVELS.push({
   levers: [],
   backgrounds: [1, 1],
   platforms: [],
+  signs: [],
   cutscenes: [],
   doors : [{x: 1350, y: -100, width: 40, height: 120, destX: 1350, destY: 750, ID: 4}, 
     {x: -40, y: 60, width: 40, height: 120, destX: 1350, destY: 100, ID: 6}],
@@ -195,6 +203,7 @@ window.LEVELS.push({
   ID: 7,
   movingPlatforms: [],
   levers: [],
+  signs: [],
   backgrounds: [1, 4],
   platforms: [],
   cutscenes: [{parts: new Array(['hideplayer', 0],

@@ -1,4 +1,3 @@
-Increase explosion sprite radius
 
 Long holds on the jump button makes you jump higher
 

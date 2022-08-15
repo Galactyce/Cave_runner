@@ -9,7 +9,7 @@ var TileType = {
 function Tile(type, index, dangerType) {
   this.scale = 1
   powerupjs.SpriteGameObject.call(this, this.sprite, this.scale, 0, ID.layer_overlays);
-  this.sprite = sprites.block;
+  this.sprite = sprites.single_cave_tile;
   this.dangerType = typeof dangerType !== 'undefined' ? dangerType : 'spike_block'
   this.sheetIndex = 0
   this.index = index

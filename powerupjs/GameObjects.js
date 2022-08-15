@@ -462,6 +462,7 @@ AnimatedGameObject.prototype.update = function(delta) {
 
     this.time -= this.current.frameTime;
     this._sheetIndex++;
+    console.log(this.sheetIndex)
     if (this._sheetIndex >= this.sprite.nrSheetElements){
       if (this.current.looping)
     this._sheetIndex = 0;

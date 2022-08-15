@@ -36,9 +36,7 @@ Player.prototype.handleInput = function () {
 }
   
   if (powerupjs.Keyboard.keys[37].down || powerupjs.Keyboard.keys[65].down) {
-    // if (this.onLadder) {
-    //   if (this.velocity.y !== 0) return
-    // }
+
     this.mirror = true;
     this.velocity.x += -105;
     if (this.velocity.x < -700) this.velocity.x = -500;
@@ -86,19 +84,18 @@ Player.prototype.update = function (delta) {
       playing.inCutscene = true
     }
   }
-
-  if (playing.inCutscene) {
-    // this.velocity.y = 0
-  } else this.doPhysics();
+   this.doPhysics();
 };
 
 Player.prototype.doPhysics = function () {
   // if (this.onPlatform) return;
   this.handleCollisions();
 
-  if (this.onLadder && !this.onTheGround) this.velocity.y = 150;
+  if (this.onLadder && !this.onTheGround) {
+    this.velocity.y = 150;
+  }
   else this.velocity.y += 100;
-  if (this.velocity.y > 1400) this.velocity.y = 1400;
+  if (this.velocity.y > 1000) this.velocity.y = 1000;
   this.handleCollisions();
 };
 
@@ -174,7 +171,7 @@ Player.prototype.handleCollisions = function () {
         // var rightBlock = tiles.getTileType(x + 1, y);
         // console.log(rightBlock)
         // if (rightBlock === TileType.ladder) return
-        if (depth.y > 40) return
+        if (depth.y > 40 || depth.y < -80) return
         this.position.y += depth.y + 1;
       }
     }

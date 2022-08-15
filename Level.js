@@ -47,6 +47,14 @@ function Level(currlevel, doorEntered) {
     );
   }
   this.add(this.platforms);
+  this.signs = new powerupjs.GameObjectList(ID.layer_overlays);
+  for (var i = 0; i < this.levelData.signs.length; i++) {
+    var l = this.levelData.signs[i];
+    this.signs.add(
+      new Sign(l.text, l.pos, l.type)
+    );
+  }
+  this.add(this.signs)
   this.add(tiles);
   var backgroundBack = new powerupjs.AnimatedGameObject(
     0.9,

@@ -8,7 +8,7 @@ function FlyingBomb(position) {
   this.startPosition = position;
   this.playAnimation("flying");
 
-  this.origin = new powerupjs.Vector2(this.width / 2, this.height / 2)
+  this.origin = new powerupjs.Vector2(this.sprite.width / 2, this.sprite.height / 2)
 
   this.waitTime = Date.now()
   this.exploding = false;
@@ -21,6 +21,10 @@ FlyingBomb.prototype = Object.create(powerupjs.AnimatedGameObject.prototype);
 
 FlyingBomb.prototype.ignite = function () {
   this.playAnimation("lit");
+  this.origin = new powerupjs.Vector2(
+    this.sprite.width / 2,
+    this.sprite.height / 2
+  );
 };
 
 FlyingBomb.prototype.reset = function () {
@@ -31,7 +35,10 @@ FlyingBomb.prototype.reset = function () {
   this.progress = 0;
   this.exploding = false
   this.playAnimation("flying");
-
+  this.origin = new powerupjs.Vector2(
+    this.sprite.width / 2,
+    this.sprite.height / 2
+  );
   if (this.position.x > powerupjs.Game.size.x - 100) {
     this.velocity.x = Math.abs(this.velocity.x) * -1;
 
@@ -62,9 +69,9 @@ FlyingBomb.prototype.update = function (delta) {
   var playingState = powerupjs.GameStateManager.get(ID.game_state_playing);
   var player = playingState.player;
   var distanceX =
-  player.position.x- this.position.x 
+  player.position.x - (this.position.x  + this.origin.x )
   var distanceY =
-   player.position.y - this.position.y;
+   player.position.y - (this.position.y + this.origin.y);
   if (!this.lit) {
     var slope = this.newYPos / this.newXPos;
     this.velocity.y = slope * this.position.x * delta;
@@ -93,7 +100,10 @@ FlyingBomb.prototype.update = function (delta) {
   if (this.lit) {
     if (!this.exploding)
     this.playAnimation("lit");
-
+    this.origin = new powerupjs.Vector2(
+      this.sprite.width / 2,
+      this.sprite.height / 2
+    );
     if (Date.now() >= this.explodeTime + 1000) {
       if (!this.exploding) {
       this.playAnimation('explode')

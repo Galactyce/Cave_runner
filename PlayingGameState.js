@@ -6,6 +6,7 @@ function PlayingState() {
   this.levels = [];
   this.cutscenes = [];
   this.overlays = [];
+  this.tutorialControls = [];
   this.spawnPos = new powerupjs.Vector2(200, 700);
   this.currentCheckpoint = undefined;
   this.currentCutsceneIndex = undefined;
@@ -60,7 +61,7 @@ PlayingState.prototype.loadPlayer = function () {
 
 Object.defineProperty(PlayingState.prototype, "currentLevel", {
   get: function () {
-    return this.levelIDs[this.currentLevelIndex];
+    return this.levels[this.currentLevelIndex];
   },
 });
 
@@ -77,15 +78,23 @@ PlayingState.prototype.update = function (delta) {
       this.levels[i].platforms.at(k).update(delta);
     }
   }
+  for (var i=0; i<this.currentLevel.signs.listLength; i++) {
+    this.currentLevel.signs.at(i).controls.update(delta)
+    
+  }
 };
 
 PlayingState.prototype.draw = function () {
   this.currentLevel.draw();
+
   this.player.draw();
 
   this.currentLevel.moss_deco.draw();
   this.currentLevel.enemies.draw();
-
+  for (var i=0; i<this.currentLevel.signs.listLength; i++) {
+    this.currentLevel.signs.at(i).controls.draw()
+    
+  }
   this.currentLevel.lava_deco.draw();
   console.log(this.overlays.length);
   for (var i = 0; i < this.overlays.length; i++) {
