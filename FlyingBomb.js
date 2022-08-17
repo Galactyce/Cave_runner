@@ -69,9 +69,9 @@ FlyingBomb.prototype.update = function (delta) {
   var playingState = powerupjs.GameStateManager.get(ID.game_state_playing);
   var player = playingState.player;
   var distanceX =
-  player.position.x - (this.position.x  + this.origin.x )
+  player.position.x - (this.position.x)
   var distanceY =
-   player.position.y - (this.position.y + this.origin.y);
+   player.position.y - (this.position.y);
   if (!this.lit) {
     var slope = this.newYPos / this.newXPos;
     this.velocity.y = slope * this.position.x * delta;

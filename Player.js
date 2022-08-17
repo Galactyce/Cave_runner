@@ -189,7 +189,7 @@ Player.prototype.doPhysics = function () {
     "platformer"
   ) {
     if (!this.jumping) {
-      if (this.onLadder && !this.onTheGround) {
+      if (this.onLadder && !this.onTheGround && !powerupjs.Keyboard.keys[40].down) {
         this.velocity.y = 150;
       } else this.velocity.y += 100;
       if (this.velocity.y > 1000) this.velocity.y = 1000;
