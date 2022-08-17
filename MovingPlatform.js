@@ -1,4 +1,4 @@
-function MovingPlatform(x, y, destX, destY, vX, vY, size, id) {
+function MovingPlatform(x, y, destX, destY, vX, vY, size, id, triggerID) {
   if (size === 'big')
     this.sprite = sprites.moving_platform
   else if (size === 'small') 
@@ -12,7 +12,14 @@ function MovingPlatform(x, y, destX, destY, vX, vY, size, id) {
   this.vY = vY;
   this.size = size;
   this.d = 0;
-  
+  this.triggerID = triggerID
+  if (this.triggerID === undefined) {
+    this.active = true
+  }
+  else {
+    this.active = false
+  }
+
   this.velocity.x = this.vX
   this.velocity.y = this.vY
 }
@@ -20,8 +27,8 @@ function MovingPlatform(x, y, destX, destY, vX, vY, size, id) {
 MovingPlatform.prototype = Object.create(powerupjs.SpriteGameObject.prototype);
 
 MovingPlatform.prototype.update = function(delta) {
+  if (this.active) {
   this.d += 0.1
-
   if (this.position.x > this.destX) {
     this.velocity.x = Math.abs(this.velocity.x) * -1
     // this.position.x = this.destX - 10;
@@ -38,8 +45,10 @@ MovingPlatform.prototype.update = function(delta) {
     this.velocity.y = Math.abs(this.velocity.y) * - 1
 
   }
-  var player = powerupjs.GameStateManager.get(ID.game_state_playing).player;
   powerupjs.SpriteGameObject.prototype.update.call(this, delta)
+
+}
+  var player = powerupjs.GameStateManager.get(ID.game_state_playing).player;
 
   // player.oldPos.y = player.position.y
   if (player.position.x > this.position.x && player.position.x < this.position.x + this.width && 

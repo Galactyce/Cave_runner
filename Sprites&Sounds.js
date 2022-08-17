@@ -18,7 +18,9 @@ ID.layer_overlays_2 = 32;
 ID.tiles = 1;
 ID.player = 2;
 ID.deco = 3;
-
+ID.items = 4;
+ID.subTiles = 5;
+ID.inventory = 6;
 
 powerupjs.Game.loadAssets = function() {
   var loadSprite = function(img, collisionMask) {
@@ -41,6 +43,10 @@ powerupjs.Game.loadAssets = function() {
 
   }
 
+  sprites.floor_items = {
+    
+  }
+
   sprites.interact_marker = loadSprite('interact_marker.png');
   sprites.normal_spike_block = loadSprite("normal_spike_block.png");
   sprites.cave_spikes = loadSprite("cave_spikes.png");
@@ -50,15 +56,18 @@ powerupjs.Game.loadAssets = function() {
   sprites.cave_platform = loadSprite('cave_platform.png');
   sprites.ladder = loadSprite('ladder_tile.png')
   sprites.sign = loadSprite('sign.png');
+  sprites.cube = loadSprite('cube.png');
   sprites.walking_controls = loadSprite('walking_controls@6.png');
   sprites.jumping_controls = loadSprite('jump_controls@3.png');
   sprites.warning_symbol = loadSprite('warning_symbol.png');
   sprites.demo_end = loadSprite('demo_end.png');
   sprites.single_cave_tile = loadSprite('single_cave_tile.png')
   sprites.idle = loadSprite("character_idle.png");
-  sprites.climb = loadSprite("character_climbing@4.png");
   sprites.run = loadSprite("character_run@4.png");
+  sprites.wrench_idle = loadSprite("character_idle_wrench.png");
+  sprites.wrench_run = loadSprite("character_run_wrench@4.png");
   sprites.text_box = loadSprite("text_box.png");
+  sprites.metal_door = loadSprite("metal_door.png");
   sprites.lever_inactive = loadSprite("lever_inactive.png");
   sprites.rocket = loadSprite("rocket.png");
   sprites.rocket_base = loadSprite("rocket_base.png");
@@ -75,5 +84,11 @@ powerupjs.Game.loadAssets = function() {
   sprites.moving_platform_small = loadSprite('moving_platform_small.png')
   sprites.lava_surface = loadSprite('lava_surface@2.png')
   sprites.lava_idle = loadSprite('lava_deep.png')
-
+  sprites.workshop_background_back = loadSprite('workshop_background_back.png');
+  sprites.workshop_background_front = loadSprite('workshop_background_front.png');
+  sprites.inventory_empty = loadSprite('inventory_slot_empty.png');
+  sprites.inventory_wrench = loadSprite('inventory_slot_wrench.png');
+  sprites.broken_machine = loadSprite('broken_machine.png')
+  sprites.working_machine = loadSprite('working_machine.png')
+  sprites.wrench_floor = loadSprite('wrench_floor.png')
 }

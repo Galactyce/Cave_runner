@@ -27,10 +27,10 @@ function Level(currlevel, doorEntered) {
         p.vX,
         p.vY,
         p.size,
-        ID.platforms
+        ID.platforms,
+        p.triggerID
       )
     );
-    console.log(this.movingPlatforms[i]);
   }
   this.add(this.movingPlatforms);
   this.levers = new powerupjs.GameObjectList(ID.layer_objects_1);
@@ -47,6 +47,15 @@ function Level(currlevel, doorEntered) {
     );
   }
   this.add(this.platforms);
+  this.subRoomDoors = new powerupjs.GameObjectList(ID.layer_objects_2);
+  console.log(this.levelData)
+  for (var i = 0; i < this.levelData.subRoomDoors.length; i++) {
+    var l = this.levelData.subRoomDoors[i];
+    this.subRoomDoors.add(
+      new Door(new powerupjs.Vector2(l.x, l.y), new powerupjs.Vector2(l.destX, l.destY), l.subRoomID, currlevel)
+    );
+  }
+  this.add(this.subRoomDoors);
   this.signs = new powerupjs.GameObjectList(ID.layer_overlays);
   for (var i = 0; i < this.levelData.signs.length; i++) {
     var l = this.levelData.signs[i];
@@ -55,6 +64,20 @@ function Level(currlevel, doorEntered) {
     );
   }
   this.add(this.signs)
+  this.machines = new powerupjs.GameObjectList(ID.layer_overlays);
+  for (var i = 0; i < this.levelData.brokenMachines.length; i++) {
+    var l = this.levelData.brokenMachines[i];
+    this.machines.add(
+      new Machine(new powerupjs.Vector2(l.x, l.y - 25), l.triggerID)
+    );
+  }
+  this.add(this.machines)
+  this.items = new powerupjs.GameObjectList(ID.layer_objects_1);
+  for (var i=0; i<this.levelData.items.length; i++) {
+    var l = this.levelData.items[i];
+    this.items.add(new Item(l.type, l.sprite, l.position))
+  }
+  this.add(this.items)
   this.add(tiles);
   var backgroundBack = new powerupjs.AnimatedGameObject(
     0.9,
@@ -102,7 +125,6 @@ Level.prototype.update = function (delta) {
       doorData.height
     );
     if (rect.intersects(player.boundingBox)) {
-  
       playingState.goToLevel(doorData.ID, doorData);
       playingState.player.position = new powerupjs.Vector2(
         doorData.destX,
@@ -111,32 +133,32 @@ Level.prototype.update = function (delta) {
       break;
     }
   }
-  // for (var i=0; i<powerupjs.GameStateManager.get(ID.game_state_playing).cutscenes.length; i++) {
-  // var playingState = powerupjs.GameStateManager.get(ID.game_state_playing);
-  // var player = playingState.player;
-  // var hitbox = new powerupjs.Rectangle(playingState.cutscenes[i].rect.x, playingState.cutscenes[i].rect.y,
-  //   playingState.cutscenes[i].rect.width, playingState.cutscenes[i].rect.height)
-  // if (hitbox.intersects(player.boundingBox)) {
-  //   powerupjs.GameStateManager.get(ID.game_state_playing).inCutscene = true;
-  //   var playing = powerupjs.GameStateManager.get(ID.game_state_playing);
+  for (var i = 0; i < this.subRoomDoors.listLength; i++) {
+    var subDoorData = this.subRoomDoors.at(i);
+    var rect = new powerupjs.Rectangle(
+      subDoorData.position.x,
+      subDoorData.position.y,
+      subDoorData.width,
+      subDoorData.height
+    );
+    if (rect.intersects(player.boundingBox)) {
+      player.isByInteractable = true;
+      if (powerupjs.Keyboard.keys[69].pressed) {
+      playingState.player.position = subDoorData.spawnArea.copy()
+      playingState.currentSublevelIndex = subDoorData.subRoomID
+      playingState.currentLevelIndex = -1
+      playingState.currentGameStyle = 'explore'
+      player.isByInteractable = false;
 
-  // // alert(playing.levels[playing.currentLevelIndex].inCutscene)
-  // }
-  // }
+      break;
+      }
+    }
+    else {
+      player.isByInteractable = false;
+    }
+  }
 };
 
 Level.prototype.draw = function () {
   powerupjs.GameObjectList.prototype.draw.call(this);
 };
-// Level.prototype.loadBackgroundTile = function(x, y) {
-//   var t = new GrassTile(true, new powerupjs.Vector2(x, y));
-//   tiles.addAt(t, x, y);
-
-// }
-
-// Level.prototype.loadGrassTile = function(x, y) {
-//   var t = new GrassTile(false, new powerupjs.Vector2(x, y))
-
-//   tiles.addAt(t, x, y);
-
-// }

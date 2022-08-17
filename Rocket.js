@@ -8,6 +8,8 @@ function Rocket(position, leftShot) {
   this.loadAnimation(sprites.explode, "explode", false, 0.03);
   this.loadAnimation(sprites.rocket, "flying", true, 1);
   this.playAnimation("flying");
+  this.origin = new powerupjs.Vector2(this.width / 2, 0)
+
   this.reset();
 }
 
@@ -26,6 +28,7 @@ Rocket.prototype.reset = function () {
     this.mirror = true;
   }
   this.spawnTime = 0
+  this.waitTime = Math.random() * 2000 + 1000
 };
 
 Rocket.prototype.update = function (delta) {
@@ -34,7 +37,7 @@ Rocket.prototype.update = function (delta) {
   if (!this.visible) this.velocity.x = 0
   this.handleCollisions();
   if (!this.visible) {
-    if (Date.now() > this.spawnTime + 2000) this.reset();
+    if (Date.now() > this.spawnTime + this.waitTime) this.reset();
 };
 }
 
@@ -54,12 +57,12 @@ Rocket.prototype.handleCollisions = function () {
       var boundingBox = new powerupjs.Rectangle(
         this.position.x,
         this.position.y,
-        sprites.rocket.width,
-        sprites.rocket.height
+        this.width,
+        this.height
       );
       var tileType = tiles.getTileType(x, floorY);
       if (
-       this.boundingBox.intersects(tileBounds) &&
+       boundingBox.intersects(tileBounds) &&
         tileType !== TileType.background && tileType !== TileType.platform &&
         this.visible
       ) {
@@ -70,7 +73,7 @@ Rocket.prototype.handleCollisions = function () {
       }
     }
   var player = powerupjs.GameStateManager.get(ID.game_state_playing).player;
-  if (player.boundingBox.intersects(boundingBox) && this.visible) {
+  if (player.boundingBox.intersects(this.boundingBox) && this.visible) {
     player.reset();
     this.visible = false;
     this.spawnTime = Date.now();

@@ -197,7 +197,7 @@ GameObjectList.prototype.find = function (id) {
   for (var i = 0, l = this.gameObjects.length; i < l; ++i) {
     if (this.gameObjects[i].id === id)
         return this.gameObjects[i];
-    if (this.gameObjects[i] instanceof powerupjs.GameObjectList) {
+    if (this.gameObjects[i] instanceof powerupjs.GameObjectList || this.gameObjects[i] instanceof powerupjs.GameObjectGrid) {
         var obj = this.gameObjects[i].find(id);
         if (obj !== null)
             return obj;
@@ -251,10 +251,11 @@ Object.defineProperty(GameObjectGrid.prototype, 'gridLength', {
   }
 })
 
-GameObjectGrid.prototype.addAt = function(gameobject, col, row) {
+GameObjectGrid.prototype.addAt = function(gameobject, col, row, position) {
+  var position = typeof position !== 'undefined' ? position : new powerupjs.Vector2(0, 0)
   this.gameObjects[row * this.columns + col] = gameobject;
   gameobject.parent = this;
-  gameobject.position = new powerupjs.Vector2(col * this.cellWidth, row * this.cellHeight);
+  gameobject.position = new powerupjs.Vector2(col * this.cellWidth + position.x, row * this.cellHeight + position.y);
 }
 
 GameObjectGrid.prototype.at = function (col, row) {
@@ -462,7 +463,6 @@ AnimatedGameObject.prototype.update = function(delta) {
 
     this.time -= this.current.frameTime;
     this._sheetIndex++;
-    console.log(this.sheetIndex)
     if (this._sheetIndex >= this.sprite.nrSheetElements){
       if (this.current.looping)
     this._sheetIndex = 0;

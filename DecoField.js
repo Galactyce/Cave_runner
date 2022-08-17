@@ -43,6 +43,7 @@ CaveDecoFeild.prototype.loadCaveTile = function(type, x, y) {
     case 'V': return new CaveDecoTile(20, new powerupjs.Vector2(x, y));
     case '$': return new CaveDecoTile(17, new powerupjs.Vector2(x, y));
     case 'G': return new CaveDecoTile(26, new powerupjs.Vector2(x, y));
+    case 'I': return new CaveDecoTile(30, new powerupjs.Vector2(x, y));
     case 'S': return new CaveDecoTile(23, new powerupjs.Vector2(x, y));
     case 'W': return new CaveDecoTile(14, new powerupjs.Vector2(x, y));
     case '%': return new CaveDecoTile(21, new powerupjs.Vector2(x, y));

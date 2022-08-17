@@ -38,7 +38,7 @@ Checkpoint.prototype.update = function (delta) {
       }
       powerupjs.GameStateManager.get(ID.game_state_playing).currentCheckpoint = this.currLevel;
       window.LEVELS[this.currLevel].checked = true
-      console.log(window.LEVELS[this.currLevel])
+      window.GAMEDATA.savedItem = player.holding;
       this.grabbed = true;
       
     }
