@@ -52,8 +52,8 @@ function PlayingState() {
   this.loadInventory(new powerupjs.Vector2(20, 20));
   // this.writeLevelsStatus();
 
-  this.loadLevelsStatus();
   this.writeLevelsStatus();
+  this.loadLevelsStatus();
 
 
 
